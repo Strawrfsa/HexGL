@@ -67,7 +67,51 @@
         transform: scale(1.1);
       }
       
-      /* Glow animation */
+      /* CA Element Styling */
+      #ca-element {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10000;
+        background: rgba(0, 0, 0, 0.7);
+        border: 2px solid #ff6600;
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-family: 'Arial', sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+        color: #ff6600;
+        text-shadow: 0 0 10px rgba(255, 102, 0, 0.8);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
+        transition: all 0.3s ease;
+        cursor: default;
+      }
+      
+      #ca-element:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(255, 102, 0, 0.5);
+        background: rgba(255, 102, 0, 0.1);
+        border-color: #ffaa44;
+        color: #ffaa44;
+        text-shadow: 0 0 15px rgba(255, 170, 68, 1);
+      }
+      
+      /* Glow animation for CA */
+      @keyframes caGlow {
+        0%, 100% {
+          box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 35px rgba(255, 102, 0, 0.5);
+        }
+      }
+      
+      #ca-element {
+        animation: caGlow 4s ease-in-out infinite;
+      }
+      
+      /* Glow animation for Twitter */
       @keyframes twitterGlow {
         0%, 100% {
           box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
@@ -101,6 +145,9 @@
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
       </svg>
     </div>
+
+    <!-- CA Element -->
+    <div id="ca-element">CA:</div>
 
     <div id="step-1">
       <div id="global"></div>
