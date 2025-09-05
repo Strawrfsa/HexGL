@@ -71,7 +71,7 @@
       #ca-element {
         position: fixed;
         top: 20px;
-        right: 20px;
+        right: 5px;
         z-index: 10000;
         background: rgba(0, 0, 0, 0.7);
         border: 2px solid #ff6600;
@@ -85,7 +85,8 @@
         backdrop-filter: blur(10px);
         box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
         transition: all 0.3s ease;
-        cursor: default;
+        cursor: pointer;
+        user-select: text;
       }
       
       #ca-element:hover {
@@ -147,7 +148,7 @@
     </div>
 
     <!-- CA Element -->
-    <div id="ca-element">CA:</div>
+    <div id="ca-element" onclick="copyCA()">CA</div>
 
     <div id="step-1">
       <div id="global"></div>
@@ -193,31 +194,57 @@
 
     <script>
       function openTwitter() {
-        // Zmeňte URL na váš Twitter profil
         window.open('https://twitter.com/YOUR_TWITTER_HANDLE', '_blank');
       }
 
       function copyCA() {
-        // Copy the CA text to clipboard
-        navigator.clipboard.writeText('CA').then(function() {
-          // Visual feedback - temporarily change appearance
-          const caElement = document.getElementById('ca-element');
-          const originalText = caElement.textContent;
-          const originalBorder = caElement.style.borderColor;
-          const originalColor = caElement.style.color;
-          
-          caElement.textContent = 'Copied!';
-          caElement.style.borderColor = '#00ff00';
-          caElement.style.color = '#00ff00';
-          
-          setTimeout(() => {
-            caElement.textContent = originalText;
-            caElement.style.borderColor = originalBorder;
-            caElement.style.color = originalColor;
-          }, 1000);
-        }).catch(function(err) {
-          console.error('Could not copy text: ', err);
-        });
+        const textToCopy = 'CA';
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(textToCopy).then(function() {
+            showCopiedFeedback();
+          }).catch(function(err) {
+            copyTextFallback(textToCopy);
+          });
+        } else {
+          copyTextFallback(textToCopy);
+        }
+      }
+
+      function copyTextFallback(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        
+        try {
+          document.execCommand('copy');
+          showCopiedFeedback();
+        } catch (err) {
+          alert('Text to copy: ' + text);
+        }
+        
+        document.body.removeChild(textarea);
+      }
+
+      function showCopiedFeedback() {
+        const caElement = document.getElementById('ca-element');
+        const originalText = caElement.textContent;
+        
+        caElement.textContent = 'Copied!';
+        caElement.style.borderColor = '#00ff00';
+        caElement.style.color = '#00ff00';
+        caElement.style.textShadow = '0 0 15px rgba(0, 255, 0, 1)';
+        
+        setTimeout(() => {
+          caElement.textContent = originalText;
+          caElement.style.borderColor = '#ff6600';
+          caElement.style.color = '#ff6600';
+          caElement.style.textShadow = '0 0 10px rgba(255, 102, 0, 0.8)';
+        }, 1500);
       }
     </script>
 
