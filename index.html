@@ -196,6 +196,29 @@
         // Zmeňte URL na váš Twitter profil
         window.open('https://twitter.com/YOUR_TWITTER_HANDLE', '_blank');
       }
+
+      function copyCA() {
+        // Copy the CA text to clipboard
+        navigator.clipboard.writeText('CA').then(function() {
+          // Visual feedback - temporarily change appearance
+          const caElement = document.getElementById('ca-element');
+          const originalText = caElement.textContent;
+          const originalBorder = caElement.style.borderColor;
+          const originalColor = caElement.style.color;
+          
+          caElement.textContent = 'Copied!';
+          caElement.style.borderColor = '#00ff00';
+          caElement.style.color = '#00ff00';
+          
+          setTimeout(() => {
+            caElement.textContent = originalText;
+            caElement.style.borderColor = originalBorder;
+            caElement.style.color = originalColor;
+          }, 1000);
+        }).catch(function(err) {
+          console.error('Could not copy text: ', err);
+        });
+      }
     </script>
 
     <script src="libs/leap-0.4.1.min.js"></script>
