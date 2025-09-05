@@ -29,94 +29,56 @@
         width: 100%;
       }
       
-      /* Contract Address Styling */
-      #contract-address {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 255, 255, 0.1);
-        border: 2px solid #00ffff;
-        border-radius: 10px;
-        padding: 20px;
-        text-align: center;
-        font-family: 'Orbitron', monospace;
-        color: #00ffff;
-        z-index: 10000;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-        animation: glow 2s ease-in-out infinite alternate;
-      }
-      
-      #contract-address h3 {
-        margin-top: 0;
-        font-size: 24px;
-        text-shadow: 0 0 10px #00ffff;
-        letter-spacing: 2px;
-      }
-      
-      #contract-address .ca-text {
-        font-size: 16px;
-        font-weight: bold;
-        word-break: break-all;
-        margin: 10px 0;
-        padding: 10px;
-        background: rgba(0, 0, 0, 0.5);
-        border-radius: 5px;
-        border: 1px solid #00ffff;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-      
-      #contract-address .ca-text:hover {
-        background: rgba(0, 255, 255, 0.2);
-        transform: scale(1.05);
-      }
-      
-      #contract-address .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        background: none;
-        border: none;
-        color: #00ffff;
-        font-size: 20px;
-        cursor: pointer;
-        font-weight: bold;
-      }
-      
-      #contract-address .close-btn:hover {
-        color: #ff0080;
-      }
-      
-      @keyframes glow {
-        from {
-          box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-        }
-        to {
-          box-shadow: 0 0 50px rgba(0, 255, 255, 0.6);
-        }
-      }
-      
-      /* Show CA button */
-      #show-ca-btn {
+      /* X Twitter Logo Styling */
+      #x-twitter-logo {
         position: fixed;
         top: 20px;
-        right: 20px;
-        background: rgba(0, 255, 255, 0.2);
+        left: 20px;
+        z-index: 10000;
+        background: rgba(0, 0, 0, 0.7);
         border: 2px solid #00ffff;
-        color: #00ffff;
-        padding: 10px 15px;
-        border-radius: 5px;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
-        font-family: 'Orbitron', monospace;
-        z-index: 9999;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      }
+      
+      #x-twitter-logo:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+        background: rgba(0, 255, 255, 0.2);
+      }
+      
+      #x-twitter-logo svg {
+        width: 30px;
+        height: 30px;
+        fill: #00ffff;
         transition: all 0.3s ease;
       }
       
-      #show-ca-btn:hover {
-        background: rgba(0, 255, 255, 0.4);
+      #x-twitter-logo:hover svg {
+        fill: #ffffff;
         transform: scale(1.1);
+      }
+      
+      /* Glow animation */
+      @keyframes twitterGlow {
+        0%, 100% {
+          box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 35px rgba(0, 255, 255, 0.5);
+        }
+      }
+      
+      #x-twitter-logo {
+        animation: twitterGlow 3s ease-in-out infinite;
       }
     </style>
     <script type="text/javascript">
@@ -133,18 +95,12 @@
   </head>
 
   <body>
-    <!-- Contract Address Modal -->
-    <div id="contract-address" style="display: none;">
-      <button class="close-btn" onclick="hideContractAddress()">&times;</button>
-      <h3>CONTRACT ADDRESS</h3>
-      <div class="ca-text" onclick="copyToClipboard(this.textContent)" title="Click to copy">
-        CA: YOUR_CONTRACT_ADDRESS_HERE
-      </div>
-      <p style="font-size: 12px; margin-top: 15px; opacity: 0.7;">Click address to copy</p>
+    <!-- X Twitter Logo -->
+    <div id="x-twitter-logo" onclick="openTwitter()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
     </div>
-
-    <!-- Show CA Button -->
-    <button id="show-ca-btn" onclick="showContractAddress()">CA</button>
 
     <div id="step-1">
       <div id="global"></div>
@@ -158,15 +114,6 @@
           <div id="s-hud">HUD: On</div>
           <div id="s-godmode" style="display: none">Godmode: Off</div>
           <div id="s-credits">Credits</div>
-        </div>
-        
-        <!-- CA Display in menu -->
-        <div id="menu-ca">
-          <h3>CONTRACT ADDRESS</h3>
-          <div class="ca-display" onclick="copyToClipboard('YOUR_CONTRACT_ADDRESS_HERE')" title="Click to copy">
-            YOUR_CONTRACT_ADDRESS_HERE
-          </div>
-          <p style="font-size: 12px; margin-top: 10px; opacity: 0.7;">Click to copy</p>
         </div>
       </div>
     </div>
@@ -198,45 +145,10 @@
     <div id="leapinfo" style="display: none"></div>
 
     <script>
-      function showContractAddress() {
-        document.getElementById('contract-address').style.display = 'block';
+      function openTwitter() {
+        // Zmeňte URL na váš Twitter profil
+        window.open('https://twitter.com/YOUR_TWITTER_HANDLE', '_blank');
       }
-      
-      function hideContractAddress() {
-        document.getElementById('contract-address').style.display = 'none';
-      }
-      
-      function copyToClipboard(text) {
-        // Remove "CA: " prefix for copying
-        const address = text.replace('CA: ', '');
-        
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(address).then(function() {
-            alert('Contract address copied to clipboard!');
-          });
-        } else {
-          // Fallback for older browsers
-          const textArea = document.createElement('textarea');
-          textArea.value = address;
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-          alert('Contract address copied to clipboard!');
-        }
-      }
-      
-      // Close modal when clicking outside
-      document.addEventListener('click', function(e) {
-        const modal = document.getElementById('contract-address');
-        const btn = document.getElementById('show-ca-btn');
-        
-        if (modal.style.display === 'block' && 
-            !modal.contains(e.target) && 
-            !btn.contains(e.target)) {
-          hideContractAddress();
-        }
-      });
     </script>
 
     <script src="libs/leap-0.4.1.min.js"></script>
