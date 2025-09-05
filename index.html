@@ -28,6 +28,96 @@
         left: 0;
         width: 100%;
       }
+      
+      /* Contract Address Styling */
+      #contract-address {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 255, 255, 0.1);
+        border: 2px solid #00ffff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        font-family: 'Orbitron', monospace;
+        color: #00ffff;
+        z-index: 10000;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+      
+      #contract-address h3 {
+        margin-top: 0;
+        font-size: 24px;
+        text-shadow: 0 0 10px #00ffff;
+        letter-spacing: 2px;
+      }
+      
+      #contract-address .ca-text {
+        font-size: 16px;
+        font-weight: bold;
+        word-break: break-all;
+        margin: 10px 0;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        border: 1px solid #00ffff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      #contract-address .ca-text:hover {
+        background: rgba(0, 255, 255, 0.2);
+        transform: scale(1.05);
+      }
+      
+      #contract-address .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        color: #00ffff;
+        font-size: 20px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      
+      #contract-address .close-btn:hover {
+        color: #ff0080;
+      }
+      
+      @keyframes glow {
+        from {
+          box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        to {
+          box-shadow: 0 0 50px rgba(0, 255, 255, 0.6);
+        }
+      }
+      
+      /* Show CA button */
+      #show-ca-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 255, 255, 0.2);
+        border: 2px solid #00ffff;
+        color: #00ffff;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: 'Orbitron', monospace;
+        z-index: 9999;
+        transition: all 0.3s ease;
+      }
+      
+      #show-ca-btn:hover {
+        background: rgba(0, 255, 255, 0.4);
+        transform: scale(1.1);
+      }
     </style>
     <script type="text/javascript">
     //analytics
@@ -43,6 +133,19 @@
   </head>
 
   <body>
+    <!-- Contract Address Modal -->
+    <div id="contract-address" style="display: none;">
+      <button class="close-btn" onclick="hideContractAddress()">&times;</button>
+      <h3>CONTRACT ADDRESS</h3>
+      <div class="ca-text" onclick="copyToClipboard(this.textContent)" title="Click to copy">
+        CA: YOUR_CONTRACT_ADDRESS_HERE
+      </div>
+      <p style="font-size: 12px; margin-top: 15px; opacity: 0.7;">Click address to copy</p>
+    </div>
+
+    <!-- Show CA Button -->
+    <button id="show-ca-btn" onclick="showContractAddress()">CA</button>
+
     <div id="step-1">
       <div id="global"></div>
       <div id="title">
@@ -84,6 +187,48 @@
     </div>
 
     <div id="leapinfo" style="display: none"></div>
+
+    <script>
+      function showContractAddress() {
+        document.getElementById('contract-address').style.display = 'block';
+      }
+      
+      function hideContractAddress() {
+        document.getElementById('contract-address').style.display = 'none';
+      }
+      
+      function copyToClipboard(text) {
+        // Remove "CA: " prefix for copying
+        const address = text.replace('CA: ', '');
+        
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(address).then(function() {
+            alert('Contract address copied to clipboard!');
+          });
+        } else {
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea');
+          textArea.value = address;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          alert('Contract address copied to clipboard!');
+        }
+      }
+      
+      // Close modal when clicking outside
+      document.addEventListener('click', function(e) {
+        const modal = document.getElementById('contract-address');
+        const btn = document.getElementById('show-ca-btn');
+        
+        if (modal.style.display === 'block' && 
+            !modal.contains(e.target) && 
+            !btn.contains(e.target)) {
+          hideContractAddress();
+        }
+      });
+    </script>
 
     <script src="libs/leap-0.4.1.min.js"></script>
     <script src="libs/Three.dev.js"></script>
